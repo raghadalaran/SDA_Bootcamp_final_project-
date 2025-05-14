@@ -1,0 +1,59 @@
+trigger:
+  - main        # <- select branch
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  # Deploy Infrastructure
+  - stage: DeployStage
+    displayName: "Deploy Infrastructure"
+    jobs:
+      - job: TerraformApply
+        displayName: "Run Terraform to Provision Infrastructure"
+        steps:
+          - task: TerraformInstaller@0             # <- install Terraform on azure agent
+            inputs:
+              terraformVersion: "1.5.7"
+            displayName: "Install Terraform"
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: "AzureServiceConnection"         # <- YOU should create Azure Service Connection
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+
+                # YOU should secret Add ARM variables in pipeline
+
+                export ARM_CLIENT_ID=$(ARM_CLIENT_ID)
+                export ARM_CLIENT_SECRET=$(ARM_CLIENT_SECRET)
+                export ARM_SUBSCRIPTION_ID=$(ARM_SUBSCRIPTION_ID)
+                export ARM_TENANT_ID=$(ARM_TENANT_ID)
+
+                # Create RG , Storge  , Container      :>  store state
+
+                az group create --name Devops1-week12-Techmomentum-rg --location centralus
+
+                az storage account create --name techmomentumstorage --resource-group Devops1-week12-Techmomentum-rg --location centralus --sku Standard_LRS
+                
+                az storage container create --name terraformstate --account-name techmomentumstorage
+
+
+                # terraform init and get terraform state from remote storge
+
+                cd terraform
+                terraform init
+                  -backend-config="storage_account_name=techmomentumstorage" /
+                  -backend-config="container_name=terraformstate" /
+                  -backend-config="key=terraform.tfstate"  / 
+                  -backend-config="resource_group_name=DevOps1-week12-Techmomentum-RG"
+
+                terraform import azurerm_resource_group.RG "/subscriptions/.../resourceGroups/DevOps1-week12-Techmomentum-RG"
+
+                terraform apply -auto-approve
+
+
+              displayName: "Run Terraform"
+
+
+  
