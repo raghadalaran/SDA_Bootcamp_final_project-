@@ -1,5 +1,5 @@
 trigger:
-  - main
+  - meshari
 
 pool:
   vmImage: "ubuntu-latest"
@@ -22,8 +22,6 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-
-
 
 
                 az group create --name DevOps1-week12-Techmomentum-RG --location germanywestcentral
