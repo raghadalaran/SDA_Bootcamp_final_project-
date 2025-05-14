@@ -1,0 +1,48 @@
+trigger:
+  - main
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  # Deploy Infrastructure and Application
+  - stage: DeployStage
+    displayName: "Deploy Infrastructure and Application"
+    dependsOn: BuildStage
+    jobs:
+      - job: TerraformApply
+        displayName: "Run Terraform to Provision Infrastructure"
+        steps:
+          - task: TerraformInstaller@0
+            inputs:
+              terraformVersion: "1.5.7"
+            displayName: "Install Terraform"
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: "AzureServiceConnection"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+
+                az group create --name DevOps1-week12-Techmomentum-RG --location germanywestcentral
+
+                az storage account create --name techmomentumstorage --resource-group DevOps1-week12-Techmomentum-RG --location germanywestcentral --sku Standard_LRS
+                
+                az storage container create --name terraformstate --account-name techmomentumstorage
+
+
+                terraform init
+                  -backend-config="storage_account_name=techmomentumstorage" /
+                  -backend-config="container_name=terraformstate" /
+                  -backend-config="key=terraform.tfstate"  / 
+                  -backend-config="resource_group_name=DevOps1-week12-Techmomentum-RG"
+
+                terraform import azurerm_resource_group.RG "/subscriptions/.../resourceGroups/DevOps1-week12-Techmomentum-RG"
+
+                terraform apply -auto-approve
+
+
+              displayName: "Run Terraform"
+
+
+  
