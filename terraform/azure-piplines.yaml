@@ -1,34 +1,45 @@
 trigger:
-  - meshari
+  - meshari        # <- select branch
 
 pool:
   vmImage: "ubuntu-latest"
 
 stages:
-  # Deploy Infrastructure and Application
+  # Deploy Infrastructure
   - stage: DeployStage
     displayName: "Deploy Infrastructure and Application"
     jobs:
       - job: TerraformApply
         displayName: "Run Terraform to Provision Infrastructure"
         steps:
-          - task: TerraformInstaller@0
+          - task: TerraformInstaller@0             # <- install Terraform on azure agent
             inputs:
               terraformVersion: "1.5.7"
             displayName: "Install Terraform"
           - task: AzureCLI@2
             inputs:
-              azureSubscription: "AzureServiceConnection"
+              azureSubscription: "AzureServiceConnection"         # <- YOU should create Azure Service Connection
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
 
+                # YOU should secret Add ARM variables in pipeline
+
+                export ARM_CLIENT_ID=$(ARM_CLIENT_ID)
+                export ARM_CLIENT_SECRET=$(ARM_CLIENT_SECRET)
+                export ARM_SUBSCRIPTION_ID=$(ARM_SUBSCRIPTION_ID)
+                export ARM_TENANT_ID=$(ARM_TENANT_ID)
+
+                # Create RG , Storge  , Container      :>  store state
 
                 az group create --name DevOps1-week12-Techmomentum-RG --location germanywestcentral
 
                 az storage account create --name techmomentumstorage --resource-group DevOps1-week12-Techmomentum-RG --location germanywestcentral --sku Standard_LRS
                 
                 az storage container create --name terraformstate --account-name techmomentumstorage
+
+
+                # terraform init and get terraform state from remote storge
 
                 cd terraform
                 terraform init
