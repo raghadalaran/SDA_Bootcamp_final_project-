@@ -24,8 +24,8 @@ stages:
               versionSpec: "18.x"
             displayName: "Install Node.js"
 
-          - script: |
-              cd ./
+          - script: |    
+              cd ../authentication_app_backend         
               npm install
               npm test
             displayName: "Backend Tests"
