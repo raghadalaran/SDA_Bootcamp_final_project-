@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: frontend-configmap
+ namespace: techMomentum-project3
+data:
+ config.json: |
+   {
+     "API_URL": "http://134.33.25.140/backend/"
+   }
