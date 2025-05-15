@@ -1,12 +1,11 @@
 trigger:
   branches:
     include:
-      - main                           # <- select branch
+      - main
 
   paths:
     include:
-    - authentication_app_frontend/**
-
+      - authentication_app_frontend/**
 
 stages:
   # Stage 1: Testing
@@ -22,10 +21,10 @@ stages:
             displayName: "Install Node.js"
 
           - script: |
-              cd .
               npm install
               npm test
             displayName: "Frontend Tests"
+            workingDirectory: authentication_app_frontend  # ✅ تصحيح المسار
 
   # Stage 2: Build and Push Docker Images
   - stage: BuildStage

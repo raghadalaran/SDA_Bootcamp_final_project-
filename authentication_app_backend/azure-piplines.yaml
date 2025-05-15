@@ -1,12 +1,11 @@
 trigger:
   branches:
     include:
-      - main                           # <- select branch
+      - main
 
   paths:
     include:
-    - authentication_app_backend/**
-
+      - authentication_app_backend/**
 
 pool:
   vmImage: "ubuntu-latest"
@@ -24,11 +23,11 @@ stages:
               versionSpec: "18.x"
             displayName: "Install Node.js"
 
-          - script: |    
-              cd .        
+          - script: |
               npm install
               npm test
             displayName: "Backend Tests"
+            workingDirectory: authentication_app_backend  # ✅ تصحيح المسار
 
   # Stage 2: Build and Push Docker Images
   - stage: BuildStage
