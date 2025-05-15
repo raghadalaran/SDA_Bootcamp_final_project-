@@ -11,6 +11,7 @@ resource "azurerm_network_security_group" "db_nsg" {
 }
 
 
+
 ///////////////Rules  ////////////////////////////////
 resource "azurerm_network_security_rule" "allow_80" {
   name                        = "allow_http"
