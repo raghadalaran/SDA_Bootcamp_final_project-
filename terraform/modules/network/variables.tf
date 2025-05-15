@@ -2,12 +2,19 @@ variable "resource_group_name" {
   description = "resource_group_name"
 }
 
-variable "name" {
-  description = "name"
-}
 
 variable "vnet_name" {
   description = "vnet_name"
+}
+
+variable "location" {
+  description = "location"
+}
+
+variable "vnet_address_space" {
+  description = "The address space for the virtual network"
+  type        = list(string)
+  default     = ["10.0.0.0/16"]
 }
 
 variable "address_prefixes" {
@@ -33,3 +40,4 @@ variable "subnets" {
     }
   ]
 }
+

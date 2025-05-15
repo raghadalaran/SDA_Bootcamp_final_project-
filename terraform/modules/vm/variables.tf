@@ -43,15 +43,3 @@ variable "vm_nic_name" {
   type        = string
   default     = "vm_nic"
 }
-
-variable "ssh_key_algorithm" {
-  description = "The algorithm for the SSH private key"
-  type        = string
-  default     = "RSA"
-}
-
-variable "ssh_key_bits" {
-  description = "The number of bits for the SSH private key"
-  type        = number
-  default     = 4096
-}
