@@ -48,3 +48,4 @@ stages:
               docker build -t "samahmoe/ui-auth-app:latest" .
               docker push "samahmoe/ui-auth-app:latest"
             displayName: "Build and Push Frontend"
+            workingDirectory: authentication_app_frontend  # ✅ تصحيح المسار
