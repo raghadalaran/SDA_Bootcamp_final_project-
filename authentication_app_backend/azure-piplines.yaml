@@ -25,6 +25,7 @@ stages:
             displayName: "Install Node.js"
 
           - script: |
+              cd ./
               npm install
               npm test
             displayName: "Backend Tests"
