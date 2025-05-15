@@ -15,20 +15,6 @@ variable "address_prefixes" {
   default     = []
 }
 
-variable "db_subnet_name" {
-  description = "db_subnet_name"
-}
-
-
-variable "aks_subnet_name" {
-  description = "aks_subnet_name"
-}
-
-variable "vm_subnet_name" {
-  description = "The name of the VM subnet"
-  type        = string
-  default     = "vm-subnet"
-}
 
 variable "subnets" {
   description = "List of subnets"
