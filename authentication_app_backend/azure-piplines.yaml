@@ -46,9 +46,9 @@ stages:
             displayName: "Login to DockerHub"
             inputs:
               command: login
-              containerRegistry: dockerhub_connection
+              containerRegistry: Dockerhub-Connection
 
           - script: |
-              docker build -t "imagename" .
-              docker push "imagename"
+              docker build -t "samahmoe/api-auth-app:latest" .
+              docker push "samahmoe/api-auth-app:latest"
             displayName: "Build and Push Backend Image"

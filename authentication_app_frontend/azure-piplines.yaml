@@ -42,9 +42,9 @@ stages:
             displayName: "Login to DockerHub"
             inputs:
               command: login
-              containerRegistry: dockerhub_connection
+              containerRegistry: Dockerhub-Connection
 
           - script: |
-              docker build -t "imagename" .
-              docker push "imagename"
+              docker build -t "samahmoe/ui-auth-app:latest" .
+              docker push "samahmoe/ui-auth-app:latest"
             displayName: "Build and Push Frontend"
