@@ -25,7 +25,7 @@ spec:
                path: config.json
      containers:
        - name: frontend-app
-         image: afrah3b/ui-auth-app:latest
+         image: samahmoe/ui-auth-app:latest
          ports:
            - containerPort: 80
          volumeMounts:
