@@ -18,15 +18,6 @@ spec:
    spec:
      containers:
        - name: backend-app
-         image: afrah3b/api-project-trainer-portal:latest
+         image: afrah3b/api-auth-app:latest
          ports:
            - containerPort: 3000
-         env:
-           - name: DB_SERVER
-             value: "devops1-week10-afrah-sqlserver.database.windows.net"
-           - name: DB_USER
-             value: "afrah"
-           - name: DB_PASSWORD
-             value: "password123456@"
-           - name: DB_NAME
-             value: "devops1-week10-afrah-sqldb"

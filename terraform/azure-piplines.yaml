@@ -1,5 +1,12 @@
 trigger:
-  - main        # <- select branch
+  branches:
+    include:
+      - main                           # <- select branch
+
+  paths:
+    include:
+    - terraform/**
+
 
 pool:
   vmImage: "ubuntu-latest"
@@ -46,9 +53,9 @@ stages:
                   -backend-config="storage_account_name=techmomentumstorage" /
                   -backend-config="container_name=terraformstate" /
                   -backend-config="key=terraform.tfstate"  / 
-                  -backend-config="resource_group_name=DevOps1-week12-Techmomentum-RG"
+                  -backend-config="resource_group_name=Devops1-week12-Techmomentum-rg"
 
-                terraform import azurerm_resource_group.RG "/subscriptions/.../resourceGroups/DevOps1-week12-Techmomentum-RG"
+                terraform import module.azurerm_resource_group.resource_group "/subscriptions/.../resourceGroups/Devops1-week12-Techmomentum-rg"
 
                 terraform apply -auto-approve
 
