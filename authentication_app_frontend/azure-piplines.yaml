@@ -22,7 +22,7 @@ stages:
             displayName: "Install Node.js"
 
           - script: |
-              cd ../authentication_app_frontend
+              cd .
               npm install
               npm test
             displayName: "Frontend Tests"
