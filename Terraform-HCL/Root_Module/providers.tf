@@ -3,7 +3,7 @@ terraform {
 
   backend "azurerm" {
     resource_group_name  = "Devops1-week12-Techmomentum-rg-test"
-    storage_account_name = "techmomentumstorage"
+    storage_account_name = "techmomentumstoragetest"
     container_name       = "terraformstate"
     key                  = "terraform.tfstate"
   }
