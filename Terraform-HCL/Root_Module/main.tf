@@ -13,6 +13,7 @@ module "network" {
   vnet_name           = local.vnet_name
   vnet_address_space  = local.vnet_address_space
   subnets             = local.subnets
+  depends_on = [ module.resource_group ]
 }
 #Database
 module "database" {
@@ -29,6 +30,7 @@ module "database" {
   private_dns_zone_name           = local.private_dns_zone_name
   private_dns_zone_vnet_link_name = local.private_dns_zone_vnet_link_name
   virtual_network_id              = local.virtual_network_id
+  depends_on = [ module.network ]
 }
 #AKS
 module "AKS" {
@@ -40,5 +42,6 @@ module "AKS" {
   default_node_pool_name      = local.default_node_pool_name
   virtual_network_name        = local.virtual_network_name
   aks_subnet_address_prefixes = local.aks_subnet_address_prefixes
+  depends_on = [ module.resource_group ]
 }
 
