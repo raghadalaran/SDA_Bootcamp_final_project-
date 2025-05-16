@@ -31,7 +31,7 @@ locals {
 
 
   #AKS
-  prefix                      = "Devops1test"
+  prefix                      = "Devops1-test"
   vm_size                     = "Standard_D2s_v3"
   default_node_pool_name      = "default"
   virtual_network_name        = module.network.virtual_network  #also output from network module
