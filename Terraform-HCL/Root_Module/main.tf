@@ -41,3 +41,4 @@ module "AKS" {
   virtual_network_name        = local.virtual_network_name
   aks_subnet_address_prefixes = local.aks_subnet_address_prefixes
 }
+
