@@ -2,7 +2,7 @@
 terraform {
 
   backend "azurerm" {
-    resource_group_name  = "Devops1-week12-Techmomentum-rg"
+    resource_group_name  = "Devops1-week12-Techmomentum-rg-test"
     storage_account_name = "techmomentumstorage"
     container_name       = "terraformstate"
     key                  = "terraform.tfstate"
@@ -28,8 +28,6 @@ provider "azurerm" {
       prevent_deletion_if_contains_resources = false
     }
   }
-  subscription_id = "a7135c8f-934c-4000-b5b1-b09d6b645365"
-
 }
 
 provider "tls" {

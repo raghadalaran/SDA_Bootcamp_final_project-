@@ -1,5 +1,5 @@
 locals {
-  resource_group_name = "Devops1-week12-Techmomentum-rg"
+  resource_group_name = "Devops1-week12-Techmomentum-rg-test"
   location            = "Central US"
   tags                = { "env" : "production" }
 
