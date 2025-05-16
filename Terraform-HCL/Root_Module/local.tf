@@ -4,7 +4,7 @@ locals {
   tags                = { "env" : "production" }
 
   #network
-  vnet_name          = "Devops1-w12-w"
+  vnet_name          = "Devops1-w12-wtest"
   vnet_address_space = ["10.0.0.0/16"]
   subnets = [
     {
@@ -18,8 +18,8 @@ locals {
   ]
 
   #database
-  sql_server_name                 = "tch-sql-server"
-  sql_db_name                     = "tch-sql-database"
+  sql_server_name                 = "tch-sql-servertest"
+  sql_db_name                     = "tch-sql-databasetest"
   sql_admin_username              = "sqladmin"
   sql_admin_password              = "HitechP@ssyes2025" #Secret ,dont share
   sku_name                        = "Basic"
@@ -31,7 +31,7 @@ locals {
 
 
   #AKS
-  prefix                      = "Devops1"
+  prefix                      = "Devops1test"
   vm_size                     = "Standard_D2s_v3"
   default_node_pool_name      = "default"
   virtual_network_name        = module.network.virtual_network  #also output from network module
