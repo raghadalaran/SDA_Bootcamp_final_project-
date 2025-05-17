@@ -1,10 +1,11 @@
 locals {
-  resource_group_name = "Devops1-week12-Techmomentum-rg"
-  location            = "Central US"
+
+ resource_group_name = "Devops1-week12-Techmomentum-RG"
+  location            = "germanywestcentral"
   tags                = { "env" : "production" }
 
   #network
-  vnet_name          = "Devops1-w12-w"
+  vnet_name          = "Devops1-week12-Techmomentum-Vnet"
   vnet_address_space = ["10.0.0.0/16"]
   subnets = [
     {
@@ -63,8 +64,8 @@ locals {
 
 
   #database
-  sql_server_name                 = "tch-sql-server"
-  sql_db_name                     = "tch-sql-database"
+  sql_server_name                 = "tch-sql-servertest"
+  sql_db_name                     = "tch-sql-databasetest"
   sql_admin_username              = "sqladmin"
   sql_admin_password              = "HitechP@ssyes2025" #Secret ,dont share
   sku_name                        = "Basic"
@@ -76,7 +77,8 @@ locals {
 
 
   #AKS
-  prefix                 = "Devops1"
+
+  prefix                      = "Devops1-week12-Techmomentum"
   vm_size                = "Standard_D2s_v3"
   default_node_pool_name = "default"
   aks_subnet_id          = module.network.subnet_ids[0] #output from Network
