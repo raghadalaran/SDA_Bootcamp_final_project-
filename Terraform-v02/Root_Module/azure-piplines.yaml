@@ -53,7 +53,7 @@ stages:
                 terraform apply -auto-approve
 
               displayName: "Run Terraform"
-              workingDirectory: Terraform-HCL/Root_Module  
+              workingDirectory: Terraform-v02/Root_Module  
 
 
   
