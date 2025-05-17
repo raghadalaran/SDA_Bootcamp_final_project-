@@ -39,11 +39,11 @@ stages:
 
                 # Create RG , Storge  , Container      :>  store state
 
-                az group create --name Devops1-week12-Techmomentum-RG-test --location centralus
+                az group create --name Devops1-week12-Techmomentum-Storge-RG --location centralus
 
-                az storage account create --name techmomentumstoragetest --resource-group Devops1-week12-Techmomentum-RG-test --location centralus --sku Standard_LRS
+                az storage account create --name techmomentumstorage --resource-group Devops1-week12-Techmomentum-Storge-RG --location centralus --sku Standard_LRS
                 
-                az storage container create --name terraformstate --account-name techmomentumstoragetest
+                az storage container create --name terraformstate --account-name techmomentumstorage
 
 
                 # terraform init and get terraform state from remote storge
