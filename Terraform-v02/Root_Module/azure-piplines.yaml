@@ -1,12 +1,11 @@
 trigger:
   branches:
     include:
-      - main                           # <- select branch
+      - dev                           # <- select branch
 
   paths:
     include:
-    - Terraform-HCL/**
-
+    -  Terraform-v02/**
 
 pool:
   vmImage: "ubuntu-latest"
@@ -39,9 +38,9 @@ stages:
 
                 # Create RG , Storge  , Container      :>  store state
 
-                az group create --name Devops1-week12-Techmomentum-rg --location centralus
+                az group create --name Devops1-week12-Techmomentum-Storge-RG --location germanywestcentral
 
-                az storage account create --name techmomentumstorage --resource-group Devops1-week12-Techmomentum-rg --location centralus --sku Standard_LRS
+                az storage account create --name techmomentumstorage --resource-group Devops1-week12-Techmomentum-Storge-RG --location germanywestcentral --sku Standard_LRS
                 
                 az storage container create --name terraformstate --account-name techmomentumstorage
 
@@ -49,28 +48,11 @@ stages:
                 # terraform init and get terraform state from remote storge
 
                 terraform init
-                  -backend-config="storage_account_name=techmomentumstorage" /
-                  -backend-config="container_name=terraformstate" /
-                  -backend-config="key=terraform.tfstate"  / 
-                  -backend-config="resource_group_name=Devops1-week12-Techmomentum-rg"
-
-                terraform import module.resource_group.azurerm_resource_group.resource_group "/subscriptions/.../resourceGroups/Devops1-week12-Techmomentum-rg"
 
                 terraform apply -auto-approve
 
-
-                # - script: |
-                #   terraform output -raw kube_config > kubeconfig
-                #   displayName: "Extract KubeConfig"
-
-                # - publish: kubeconfig
-                #   artifact: kubeconfig
-                #   displayName: "Publish KubeConfig as Artifact"
-
-
-
               displayName: "Run Terraform"
-              workingDirectory: Terraform-HCL/Root_Module  
+              workingDirectory: Terraform-v02/Root_Module  
 
 
   
