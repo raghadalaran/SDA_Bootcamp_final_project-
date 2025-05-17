@@ -5,7 +5,7 @@ locals {
   tags                = { "env" : "production" }
 
   #network
-  vnet_name          = "Devops1-w12-w"
+  vnet_name          = "Devops1-week12-Techmomentum-Vnet"
   vnet_address_space = ["10.0.0.0/16"]
   subnets = [
     {
