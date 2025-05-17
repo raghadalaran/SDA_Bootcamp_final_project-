@@ -1,6 +1,6 @@
 locals {
   resource_group_name = "Devops1-week12-Techmomentum-RG"
-  location            = "Central US"
+  location            = "germanywestcentral"
   tags                = { "env" : "production" }
 
   #network

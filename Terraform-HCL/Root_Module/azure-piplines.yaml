@@ -39,9 +39,9 @@ stages:
 
                 # Create RG , Storge  , Container      :>  store state
 
-                az group create --name Devops1-week12-Techmomentum-Storge-RG --location centralus
+                az group create --name Devops1-week12-Techmomentum-Storge-RG --location germanywestcentral
 
-                az storage account create --name techmomentumstorage --resource-group Devops1-week12-Techmomentum-Storge-RG --location centralus --sku Standard_LRS
+                az storage account create --name techmomentumstorage --resource-group Devops1-week12-Techmomentum-Storge-RG --location germanywestcentral --sku Standard_LRS
                 
                 az storage container create --name terraformstate --account-name techmomentumstorage
 
