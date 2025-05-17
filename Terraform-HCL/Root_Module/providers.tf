@@ -7,6 +7,7 @@ terraform {
     container_name       = "terraformstate"
     key                  = "terraform.tfstate"
   }
+  
 
   required_providers {
     azurerm = {
