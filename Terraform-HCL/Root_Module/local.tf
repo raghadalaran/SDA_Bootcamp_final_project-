@@ -4,7 +4,7 @@ locals {
   tags                = { "env" : "production" }
 
   #network
-  vnet_name          = "Devops1-w12-wtest"
+  vnet_name          = "Devops1-week12-Techmomentum-Vnet"
   vnet_address_space = ["10.0.0.0/16"]
   subnets = [
     {
@@ -31,7 +31,7 @@ locals {
 
 
   #AKS
-  prefix                      = "Devops1-test"
+  prefix                      = "Devops1-week12-Techmomentum"
   vm_size                     = "Standard_D2s_v3"
   default_node_pool_name      = "default"
   virtual_network_name        = module.network.virtual_network  #also output from network module
