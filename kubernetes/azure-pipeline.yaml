@@ -20,6 +20,9 @@ steps:
     inlineScript: |
       echo "Getting AKS credentials..."
       az aks get-credentials --resource-group Devops1-week12-Techmomentum-RG --name Devops1-week12-Techmomentum-aks-cluster --overwrite-existing
+
+            echo "Getting AKS credentials..."
+      az aks get-credentials --resource-group Devops1-week12-Techmomentum-RG --name Devops1-week12-Techmomentum-aks-cluster --overwrite-existing
       
       curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
       sudo apt-get install apt-transport-https --yes
@@ -39,6 +42,7 @@ steps:
 
 
       kubectl get svc -n ingress-nginx
-
+      
+      bash ./deploy.sh
 
     workingDirectory: kubernetes  
