@@ -23,10 +23,10 @@ spec:
            - containerPort: 3000
          env:
            - name: DB_SERVER
-             value: "devops1-week12-sql.database.windows.net"
+             value: "tch-sql-servertest.database.windows.net"
            - name: DB_USER
-             value: "techmomentum"
+             value: "sqladmin"
            - name: DB_PASSWORD
-             value: "password123456@"
+             value: "HitechP@ssyes2025"
            - name: DB_NAME
-             value: "devops1-week10-sqldb"
+             value: "tch-sql-databasetest"
