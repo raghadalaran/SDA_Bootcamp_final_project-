@@ -42,6 +42,9 @@ steps:
 
 
       kubectl get svc -n ingress-nginx
+
+
+      kubectl get service -n monitoring
       
       bash ./deploy.sh
 
