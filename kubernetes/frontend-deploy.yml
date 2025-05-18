@@ -27,7 +27,7 @@ spec:
        - name: frontend-app
          image: samahmoe/ui-auth-app:latest
          ports:
-           - containerPort: 80
+           - containerPort: 3000
          volumeMounts:
            - name: config
              mountPath: /usr/share/nginx/html/config.json
