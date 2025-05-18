@@ -21,6 +21,7 @@ steps:
       echo "Getting AKS credentials..."
       az aks get-credentials --resource-group Devops1-week12-Techmomentum-RG --name Devops1-week12-Techmomentum-aks-cluster --overwrite-existing
       
-      bash ./deploy.sh
+      kubectl get svc -n ingress-nginx
+
 
     workingDirectory: kubernetes  
