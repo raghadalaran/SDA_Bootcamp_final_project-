@@ -1,4 +1,7 @@
 #!/bin/bash
+kubectl delete -f backend_deploy.yml
+kubectl delete -f frontend-deploy.yml
+
 kubectl apply -f namespace.yml
 kubectl apply -f backend_cluster_ip.yml
 kubectl apply -f backend_deploy.yml

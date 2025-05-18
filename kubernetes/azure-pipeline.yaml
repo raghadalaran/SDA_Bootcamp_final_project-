@@ -40,12 +40,10 @@ steps:
         --set controller.ingressClassResource.controllerValue=k8s.io/ingress-nginx \
         --set controller.service.type=LoadBalancer
 
-
-      kubectl get svc -n ingress-nginx
-
-
-      kubectl get service -n monitoring
-      
       bash ./deploy.sh
+
+      
+      kubectl get svc -n ingress-nginx
+      kubectl get service -n monitoring
 
     workingDirectory: kubernetes  
