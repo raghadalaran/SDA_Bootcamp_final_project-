@@ -4,7 +4,7 @@ metadata:
  name: backend-deploy
  labels:
    app: backend-app
- namespace: techMomentum-project3
+ namespace: techmomentum-project
 spec:
  replicas: 2
  selector:
@@ -21,3 +21,12 @@ spec:
          image: samahmoe/api-auth-app:latest
          ports:
            - containerPort: 3000
+         env:
+           - name: DB_SERVER
+             value: "devops1-week12-sql.database.windows.net"
+           - name: DB_USER
+             value: "techmomentum"
+           - name: DB_PASSWORD
+             value: "password123456@"
+           - name: DB_NAME
+             value: "devops1-week10-sqldb"

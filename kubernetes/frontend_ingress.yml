@@ -2,14 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
  name: frontend-ingress
- namespace: techMomentum-project3
+ namespace: techmomentum-project
 spec:
  ingressClassName: nginx
  rules:
  - http:
      paths:
-     - path: /(.*)
-       pathType: ImplementationSpecific
+     - path: /
+       pathType: Prefix
        backend:
          service:
            name: frontend-clusterip-service

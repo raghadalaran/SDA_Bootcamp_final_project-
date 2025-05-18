@@ -33,15 +33,25 @@ locals {
           source_address_prefix      = "10.240.0.0/16"
           destination_address_prefix = "10.240.0.0/16"
         }
-        "AllowLoadBalancer" = {
-          priority                   = 200
+        "AllowIngressHTTP1" = {
+          priority                   = 250
           direction                  = "Inbound"
           access                     = "Allow"
           protocol                   = "Tcp"
           source_port_range          = "*"
-          destination_port_range     = "80-443"
+          destination_port_range     = "80"
           source_address_prefix      = "*"
-          destination_address_prefix = "10.240.0.0/16"
+          destination_address_prefix = "*"
+        }
+        "AllowIngressHTTP2" = {
+          priority                   = 252
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "Tcp"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = "*"
+          destination_address_prefix = "*"
         }
       }
     }
@@ -55,7 +65,7 @@ locals {
           protocol                   = "Tcp"
           source_port_range          = "*"
           destination_port_range     = "1433"
-          source_address_prefix      = "10.0.2.0/24"
+          source_address_prefix      = "10.0.1.0/24"
           destination_address_prefix = "*"
         }
       }

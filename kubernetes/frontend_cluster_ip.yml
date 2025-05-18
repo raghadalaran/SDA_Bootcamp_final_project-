@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
  name: frontend-clusterip-service
- namespace: techMomentum-project3
+ namespace: techmomentum-project
 spec:
  type: ClusterIP
  ports:

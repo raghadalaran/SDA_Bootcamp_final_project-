@@ -4,7 +4,7 @@ metadata:
  name: frontend-deploy
  labels:
    app: frontend-app
- namespace: techMomentum-project3
+ namespace: techmomentum-project
 spec:
  replicas: 2
  selector:
