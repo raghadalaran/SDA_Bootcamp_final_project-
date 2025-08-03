@@ -15,20 +15,6 @@ We designed and maintained four Azure DevOps pipelines to automate testing, code
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 2.Project Architecture 
 
 ![Alt text](Capture.PNG)
@@ -74,7 +60,7 @@ The following backend block in providers.tf configures remote state storage usin
 
 ##### To create the backend resources, run:
 
-```bash
+```
 az storage account create --name yourStorageAccount --resource-group yourResourceGroup --location yourLocation
 
 az storage container create --name terraformstate --account-name yourStorageAccount
@@ -83,123 +69,32 @@ az storage container create --name terraformstate --account-name yourStorageAcco
 
 ```
 
-Kubernetes
+## 4.Kubernetes
 In this project, we use Kubernetes (AKS) to deploy and manage our cloud-native application. The kubernetes/ folder includes all necessary YAML files to set up the namespace, backend, frontend, networking (Ingress, Services), and monitoring tools.
 Our AKS cluster runs multiple pods across worker nodes, with internal communication via ClusterIP services and external access managed through NGINX Ingress. Monitoring components like Prometheus and Grafana are also deployed and covered in a later section.
-Cluster Overview
-Cluster Type: Managed AKS cluster
-Node Pool: 1 default pool with 2 worker nodes
-Namespace: techmomentum-project (isolates resources within the cluster)
-Pods: 2 frontend pods, 2 backend pods (one per replica), all balanced via ClusterIP services
-Ingress Controller: NGINX pre-installed and configured separately)
-Monitoring tools including Prometheus, Grafana, and SonarQube are deployed under a dedicated monitoring namespace (explained in a later section).
-Namespace
-File: namespace.yml
-This file defines a dedicated namespace techmomentum-project to isolate all application components and simplify resource management within the cluster
-All resources (Deployments, Services, Ingress, ConfigMaps) are created inside this namespace to prevent conflicts.
-File: monitoring_namespace.yml
-This file defines a dedicated namespace monitoring to isolate all monitoring components within the cluster.
-It includes tools such as Prometheus, Grafana (with a PersistentVolumeClaim for data retention), and SonarQube (deployed with a LoadBalancer service) to handle observability and code quality independently from the main application.
 
-
-
-Configuration 
-File: config_map.yml
-Defines a ConfigMap that provides the frontend with runtime configuration (config.json), which is mounted into the container via a volume
-data:
- config.json: |
-   {
-     "NEXT_PUBLIC_API_URL": "http://INGRESS_PUBLIC_IP/backend/"
-
-   }
-           How it works:
-The value INGRESS_PUBLIC_IP should be replaced with the actual external IP address assigned to the Ingress controller. This IP can be retrieved after the Ingress controller is created and its external service (usually of type LoadBalancer) is provisioned by the cloud provider. Once available, it is manually updated in the ConfigMap to ensure the frontend points to the correct backend endpoint through the Ingress path (/backend).
-This setup allows the frontend to communicate with the backend through the Ingress, without hardcoding pod or service IPs
-File: prometheus-config.yml
-This file defines a ConfigMap used by Prometheus to configure its scraping jobs. It includes scrape configurations for services such as Node Exporter, Grafana, and Kubernetes components, allowing Prometheus to collect performance metrics for monitoring purposes
-Ingress Configuration
-Files: frontend_ingress.yml, backend_ingress.yml
-Ingress resources expose internal services to the internet using HTTP routing rules:
-Frontend: Accessible at /, routes to frontend-clusterip-service.
-Backend: Accessible at /backend, uses regex rewriting to remove the /backend prefix before forwarding.
-Example from backend_ingress.yml:
-annotations:
-  nginx.ingress.kubernetes.io/rewrite-target: /$2
-   "nginx.ingress.kubernetes.io/use-regex: "true
-This ensures clean URL handling for backend request
-Frontend & Backend (Deployments and Services)
-Both frontend and backend components are deployed within the techmomentum-project namespace
-The frontend uses two replicas of the samahmoe/ui-auth-app:latest image. A ConfigMap is mounted to inject a dynamic config.json into the container, ensuring the UI stays updated without rebuilding the image. Its associated ClusterIP service listens on port 80 and forwards traffic to port 3000, acting as the internal route for the Ingress controller.
-The backend runs a Node.js API from the samahmoe/api-auth-app:latest image, with environment variables defined for connecting to an Azure SQL Database.
-Security Note: It's best practice to store sensitive values like database credentials in Kubernetes Secrets instead of hardcoding them in the manifest.
-Monitoring Deployments (Grafana,Prometheus,NodeExporter & SonarQube)
-In the monitoring namespace, we deployed several key monitoring tools to observe
-the cluster and application behavior
-Grafana is deployed using the official image and configured with a PersistentVolumeClaim to persist dashboards and settings. It uses a ConfigMap to automatically load a Prometheus data source and a predefined dashboard. Grafana is exposed internally via a ClusterIP service
-Prometheus is deployed with a custom configuration that defines scrape targets for application metrics and node-level metrics. It uses a ConfigMap for the scrape configuration and is exposed internally using a ClusterIP service.
-Node Exporter is deployed as a DaemonSet, ensuring a pod runs on each node to collect system-level metrics like CPU, memory, and disk usage. Prometheus automatically scrapes these metrics as part of its configuration
-SonarQube is deployed using the sonarqube:community image with defined resource limits to ensure stable operation. It is exposed externally through a LoadBalancer service on port 80, forwarding traffic to port 9000. This allows easy access to the web UI for code quality inspection and static analysis.
-Internal and External Communication Flow
-Client Access: External users send HTTP requests to the Kubernetes cluster through the NGINX Ingress controller.
-
-
-Ingress Routing: Based on the request path, the Ingress resource forwards traffic to the appropriate internal service (frontend-clusterip-service or backend-clusterip-service).
-
-
-Service-to-Pod Load Balancing: Each ClusterIP service routes the request to a matching set of pods using label selectors, balancing the load across replicas.
-
-
-Backend Data Access: Backend pods connect to an external Azure SQL Database using connection details passed as environment variables within the deployment specification.
-Deployment Instructions 
-To deploy all Kubernetes components:
+#### To deploy all Kubernetes components:
  Ensure that you are connected to the AKS cluster, and verify that the NGINX Ingress Controller is already installed. The Azure SQL Database must also be pre-provisioned and accessible from the cluster subnet.
-Apply all resources by running:
+###### Apply all resources by running:
+```
 kubectl apply -f kubernetes/
-this command creates the namespace, ConfigMap, deployments, services, ingress rules, and monitoring components.
+```
 
 
 
 
 
+ ## 5.Pipeline:
 
+### Our Monorepo and CI/CD Pipelines Setup
 
-
-  Pipeline:
-What is a CI/CD Pipeline?
-A CI/CD pipeline helps us automate the process of integrating and delivering our software.
-In Continuous Integration (CI), we frequently merge our code changes into a shared repository. Every time we do this, automated builds and tests run to catch any issues early.
-With Continuous Delivery (CD), once our code passes all tests, it’s automatically prepared for release. We still manually approve the deployment to production.
-Continuous Deployment goes a step further by automatically deploying every successful change to production without needing manual approval.
-
-
-
-
-
-
-
-
-
-
-
-Why do we use CI/CD?
-Faster Releases
-Better collaboration 
-Reduce risk
-Increase Reliability
-
-
-Our Monorepo and CI/CD Pipelines Setup
-
-We use a monorepo approach, which means all our project code lives in a single repository. Inside this repository, we have four main folders, each representing a different part of our system:
+We use a monorepo approach, which means all our project code lives in a single repository. Inside this repository, we have four main folders, each representing a different ##### part of our system:
 frontend/ — contains the code for our user interface
 backend/ — contains our server and API code
 terraform/ — contains infrastructure as code scripts to manage cloud resources
 Kubernetes/ — contains Kubernetes deployment configurations
-Advantages of Monorepo approach:
-Easily manage dependencies and shared code between frontend and backend
-Simplify version control because all parts are synchronized
-Make cross-team collaboration smoother since everyone works on the same codebase
-Frontend Pipeline
+
+### Frontend Pipeline
 Main Steps of Our Frontend CI/CD Pipeline
 1. Trigger Section
 This section configures the pipeline to trigger only when changes are pushed to the main branch and only if the changes affect files inside the authentication_app_frontend folder. This optimizes pipeline runs to only necessary builds.
@@ -213,7 +108,10 @@ We integrate SonarQube to analyze code quality and identify bugs, code smells, a
 We build a Docker image of our frontend app using the latest code so it can run consistently anywhere inside containers.
 6. Pushing the Image to DockerHub
 We push the Docker image to DockerHub to make it available for deployment.
-Backend Pipeline
+
+
+
+### Backend Pipeline
 Main Steps of Our Backend CI/CD Pipeline
 1. Trigger Section
 This section configures the pipeline to trigger only when changes are pushed to the main branch and only if the changes affect files inside the authentication_app_Backend folder. This optimizes pipeline runs to only necessary builds.
@@ -227,9 +125,9 @@ We integrate SonarQube to analyze code quality, detect bugs, code smells, and en
 We build a Docker image of our backend app using the latest code so it can run consistently in any containerized environment.
 6. Pushing the Image to DockerHub
 We push the Docker image to DockerHub to make it available for deployment.
-Terraform Pipeline
+### Terraform Pipeline
 
-Main Steps of Our Terraform CI/CD Pipeline
+ Main Steps of Our Terraform CI/CD Pipeline
 1. Trigger Pipeline on Infrastructure Code Changes
 The pipeline is triggered only when changes are pushed to the main branch and only if the changes are within the Terraform-v02/ folder. This ensures that the pipeline runs only when infrastructure code is modified.
 2. Deploy Infrastructure Using Terraform
@@ -243,7 +141,7 @@ Initialize and Apply Terraform:
  terraform init initializes the working directory and sets up the backend using the remote state storage.
  terraform apply provisions the defined infrastructure in Azure, automatically approving changes without manual input.
 
-Kubernetes Pipeline
+### Kubernetes Pipeline
 
 Main Steps of the Kubernetes CI/CD Pipeline
 1. Trigger Pipeline When Kubernetes Files Are Changed
@@ -263,7 +161,6 @@ Deploy Kubernetes Resources:
  This script likely contains kubectl apply commands to deploy or update services, deployments, and other resources within the cluster.
 
 
-Here is our pipeline in Azure DevOps:
 
 
 
