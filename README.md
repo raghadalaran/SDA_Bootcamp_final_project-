@@ -208,22 +208,22 @@ System Monitoring with Prometheus and Grafana:
 ## 7.Running steps:
 The deployment and execution of the Authentication Project are fully automated through four Azure DevOps pipelines. These pipelines are triggered automatically upon changes to their respective Git repositories, or can be manually executed via the Azure DevOps interface.
 ### 1- Terraform Pipeline:
-Trigger: Any changes pushed to the Terraform-02 Git repository.
-Manual Run: Can also be executed manually from Azure DevOps.
+Trigger: Any changes pushed to the Terraform-02 Git repository.<br>
+Manual Run: Can also be executed manually from Azure DevOps.<br>
 Responsibility:Installs Terraform, creates Azure resources (resource group, storage account, container), retrieves the remote state from the storage account, and runs terraform apply to provision infrastructure.
 ### 2- Kubernetes Pipeline:
-Trigger: Any changes pushed to the kubernetes Git repository.
-Manual Run: Can also be executed manually from Azure DevOps.
+Trigger: Any changes pushed to the kubernetes Git repository.<br>
+Manual Run: Can also be executed manually from Azure DevOps.<br>
 Responsibility: Gets AKS credentials, installs NGINX Ingress via Helm, injects the external IP into the config map, and deploys Kubernetes manifests using a shell script.
 ### 3- Frontend Pipeline:
-Trigger: Any changes pushed to the authentication_app_frontend Git repository.
-Manual Run: Can also be executed manually from Azure DevOps.
-Responsibility: Runs tests, performs SonarQube analysis, builds and pushes a Docker image, and restarts the frontend deployment on AKS.
+Trigger: Any changes pushed to the authentication_app_frontend Git repository.<br>
+Manual Run: Can also be executed manually from Azure DevOps.<br>
+Responsibility: Runs tests, performs SonarQube analysis, builds and pushes a Docker image, and restarts the frontend deployment on AKS.<br>
 Note: The SonarQube service connection in Azure DevOps should be updated to match the external IP of the SonarQube LoadBalancer service to ensure successful analysis.
 ### 4- Backend Pipeline:
-Trigger: Any changes pushed to the authentication_app_backend Git repository.
-Manual Run: Can also be executed manually from Azure DevOps.
-Responsibility: Runs tests, performs SonarQube analysis, builds and pushes a Docker image, and restarts the backend deployment on AKS.
+Trigger: Any changes pushed to the authentication_app_backend Git repository.<br>
+Manual Run: Can also be executed manually from Azure DevOps.<br>
+Responsibility: Runs tests, performs SonarQube analysis, builds and pushes a Docker image, and restarts the backend deployment on AKS.<br>
 Note: The SonarQube service connection in Azure DevOps should be updated to match the external IP of the SonarQube LoadBalancer service to ensure successful analysis.
 
 
