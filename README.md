@@ -190,22 +190,22 @@ Deploy Kubernetes Resources:
 
 
 
-Montring :
+## 6.Montring :
 In our monitoring setup, we have deployed three main pods, each responsible for a specific aspect of system and application monitoring: 
-1. Prometheus:
+### 1. Prometheus:
  Prometheus is used to collect and store metrics from various sources within the environment. In this setup, Prometheus monitors standard system metrics using Node Exporter, as well as additional custom application metrics.
- 2. Grafana:
+ ### 2. Grafana:
  Grafana is used to visualize the metrics collected by Prometheus. It supports two types of dashboards:
  Node Exporter Dashboard: A ready-made template that displays system-level metrics such as CPU, memory, disk, and network statistics.
   Custom Dashboards: Manually built dashboards tailored to specific application needs, allowing users to monitor any defined metrics in a visual format. 
 Grafana provides an interactive and user-friendly interface for real-time monitoring and alerting. 
-3. SonarQube:
+## 3. SonarQube:
  SonarQube is used for static code analysis of the frontend and backend applications. It scans the source code to detect bugs, vulnerabilities, code smells, and maintainability issues. This helps ensure code quality and security before deployment. 
 System Monitoring with Prometheus and Grafana:
 
 
 
-Running steps:
+## 7.Running steps:
 The deployment and execution of the Authentication Project are fully automated through four Azure DevOps pipelines. These pipelines are triggered automatically upon changes to their respective Git repositories, or can be manually executed via the Azure DevOps interface.
 1- Terraform Pipeline:
 Trigger: Any changes pushed to the Terraform-02 Git repository.
@@ -225,52 +225,6 @@ Trigger: Any changes pushed to the authentication_app_backend Git repository.
 Manual Run: Can also be executed manually from Azure DevOps.
 Responsibility: Runs tests, performs SonarQube analysis, builds and pushes a Docker image, and restarts the backend deployment on AKS.
 Note: The SonarQube service connection in Azure DevOps should be updated to match the external IP of the SonarQube LoadBalancer service to ensure successful analysis.
-
-
-
-Conclusion
-In conclusion, this project successfully demonstrated the implementation of a complete DevOps lifecycle for a containerized authentication application. By leveraging tools such as Azure DevOps, Terraform, and Kubernetes, we achieved seamless automation of infrastructure provisioning and application deployment. The adoption of Agile practices ensured continuous improvement and effective collaboration throughout the development cycle. This experience strengthened our practical skills in managing cloud-based environments and reinforced the value of automation and teamwork in delivering reliable software systems.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-References:
-GitHub. (n.d.). GitHub Repository. https://github.com/mkatq/techmomentume.git.
-Microsoft. (n.d.). Azure DevOps Services. https://dev.azure.com.
-Atlassian. (n.d.). Jira Software. https://www.atlassian.com/software/jira.
-Flaticon. (n.d.). Free vector icons and stickers. https://www.flaticon.com.
-Lucid Software. (n.d.). Lucidchart – Cloud-based diagramming tool. https://www.lucidchart.com.
-Kubernetes Authors. (n.d.). Kubernetes YAML manifest documentation. https://Kubernetes.io.
-Prometheus Authors. (n.d.). Node Exporter Documentation. https://prometheus.io/docs/guides/node-exporter/.
-HashiCorp. (n.d.). Terraform Registry. https://registry.terraform.io.
 
 
 
