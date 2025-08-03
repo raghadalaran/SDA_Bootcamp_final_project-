@@ -31,141 +31,53 @@ We designed and maintained four Azure DevOps pipelines to automate testing, code
 
 ## 2.Project Architecture 
 
+![Alt text](Capture.PNG)
+
 This is the architecture of a three-tier Kubernetes-based application deployed in Azure.
 The Kubernetes cluster includes:
 Two worker nodes running the frontend app, backend app, and monitoring tools.
 A master node (managed by Azure, not user-accessible) responsible for scheduling, scaling, and managing the cluster state.
 Flow of the Request
 A Stakeholder sends a request via a Public IP exposed through the Ingress Controller.Ingress routes the traffic to the appropriate internal service:Frontend Service or Backend Service .The services are exposed internally using ClusterIP.
-What does the architecture provide?
-High Scalability
+### What does the architecture provide?
+#### High Scalability
 Auto-Scaling: AKS supports horizontal pod autoscaling based on CPU, memory, or custom metrics.
 Load Balancers: Automatically scales traffic distribution.
 Elastic SQL Pools: Azure SQL can auto-scale based on demand.
-High Availability
+#### High Availability
 Multiple Work Nodes: AKS has multiple worker nodes distributed across availability zones.
 Azure SQL Database: Provides built-in high availability with automatic failover.
 Ingress with Load Balancing: Distributes traffic across multiple pods to prevent single points of failure.
-High Security
+#### High Security
 Private Endpoints: SQL Database is isolated from the public internet.
 NSGs and Subnet Isolation: Controls traffic between application tiers.
 Managed Identity: Allows secure AKS-to-SQL access without hardcoding credentials.
 Ingress TLS: Encrypts data in transit.
- Cost Optimized
+#### Cost Optimized
 Node Autoscaling: Automatically scales AKS nodes based on demand.
 Azure Blob Storage Lifecycle Policies: Reduces storage costs by archiving old data.
 Containerized Workloads: Efficient resource usage with containers.
 
-
-
-
-
-
-
-
-
-
-Terraform:
+## 3.Terraform:
 This project uses Terraform to provision and manage cloud infrastructure in Microsoft Azure using the Infrastructure as Code (IaC) approach. The repository is organized into reusable modules and a root configuration, which together define the full deployment. 
 
-Modules
+### Modules
 This folder contains reusable Terraform modules used across the project.
 Modules content 
 Resource Group: Creates a resource group to group related Azure resources.
 Network: Provisions a virtual network, subnets, and attaches Network Security Groups (NSGs).
 Database: Deploys an Azure SQL Server, a SQL Database, and a private endpoint for secure internal access.
 AKS: The AKS module provisions a managed Kubernetes cluster with a default node pool of two worker nodes (refer to the repository for full code). 
-
-resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "${var.prefix}-aks-cluster"
-  ..
-
-  network_profile {
-    ..
-    service_cidr   = "10.240.0.0/16" # Should NOT overlap with any subnet
-  }
-
-  default_node_pool {
-    name           = var.default_node_pool_name
-    node_count     = 2
-    ..
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
-}
-
-Root Module
-To deploy the infrastructure:
-Navigate to the root module directory.
-Run terraform apply.
-Before applying, be sure to customize:
-local.tf: defines variables like prefix, location, vm_size, etc.
-providers.tf: configures the backend and provider details.
-State Backend 
+#### State Backend 
 The following backend block in providers.tf configures remote state storage using an Azure Storage Account. This setup ensures state persistence and collaboration across teams. 
 
-backend "azurerm" {
-    resource_group_name  = "Devops1-week12-Techmomentum-Storge-RG"
-    storage_account_name = "techmomentumstorage"
-    container_name       = "terraformstate"
-    key                  = "terraform.tfstate"
-  }
 
-
-To create the backend resources, run:
+##### To create the backend resources, run:
 
 az storage account create ...
 az storage container create …
 (Update these with your actual parameters.)
-NSG Configuration
-In local.tf, NSGs (Network Security Groups) are defined for AKS and Database components:
 
-nsgs = {
-    aks_nsg = {
-      security_rule = {
-        "AllowSSH" = {
-          . . .
-          source_address_prefix      = "10.240.0.0/16"
-          destination_address_prefix = "10.240.0.0/16"
-        }
-        "AllowIngressHTTP1" = {
-          . . .
-          destination_port_range     = "80"
-          
-        }
-        "AllowIngressHTTP2" = {
-          . . .
-          destination_port_range     = "443"
-        }
-      }
-    }
-
-
-    db_nsg = {
-      security_rule = {
-        "AllowMySQL" = {
-          . . .
-          destination_port_range     = "1433"
-          source_address_prefix      = "10.0.1.0/24"       
- }
-      }
-    }
-  }
-
-
-NSG Summary
-The AKS NSG contains three rules:
-AllowSSH: Allows all traffic within the 10.240.0.0/16 subnet — this enables internal node-to-node communication.
-AllowIngressHTTP1: Allows HTTP traffic on port 80 from any source.
-AllowIngressHTTP2: Allows HTTPS traffic on port 443 from any source.
-The Database NSG 
-AllowMySQL: Allows SQL Server (port 1433) access from the AKS subnet (10.0.1.0/24). 
-Prerequisites
-Ensure the following tools are installed:
-Terraform 
-AzureCLI
 
 
 Kubernetes
