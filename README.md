@@ -72,12 +72,7 @@ AKS: The AKS module provisions a managed Kubernetes cluster with a default node 
 The following backend block in providers.tf configures remote state storage using an Azure Storage Account. This setup ensures state persistence and collaboration across teams. 
 
 
-##### To create the backend resources, run:
-
-az storage account create ...
-az storage container create …
-(Update these with your actual parameters.)
-
+<pre> ##### To create the backend resources, run: ```bash az storage account create ... az storage container create … # (Update these with your actual parameters.) ``` </pre>
 
 
 Kubernetes
